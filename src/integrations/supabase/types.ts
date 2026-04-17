@@ -14,7 +14,69 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      characters: {
+        Row: {
+          agility: number
+          class: Database["public"]["Enums"]["character_class"]
+          created_at: string
+          id: string
+          intelligence: number
+          name: string
+          strength: number
+          updated_at: string
+          user_id: string
+          vitality: number
+        }
+        Insert: {
+          agility: number
+          class: Database["public"]["Enums"]["character_class"]
+          created_at?: string
+          id?: string
+          intelligence: number
+          name: string
+          strength: number
+          updated_at?: string
+          user_id: string
+          vitality: number
+        }
+        Update: {
+          agility?: number
+          class?: Database["public"]["Enums"]["character_class"]
+          created_at?: string
+          id?: string
+          intelligence?: number
+          name?: string
+          strength?: number
+          updated_at?: string
+          user_id?: string
+          vitality?: number
+        }
+        Relationships: []
+      }
+      profiles: {
+        Row: {
+          created_at: string
+          id: string
+          nickname: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          nickname: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          nickname?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
@@ -23,7 +85,7 @@ export type Database = {
       [_ in never]: never
     }
     Enums: {
-      [_ in never]: never
+      character_class: "warrior" | "mage" | "archer" | "rogue"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -150,6 +212,8 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      character_class: ["warrior", "mage", "archer", "rogue"],
+    },
   },
 } as const
