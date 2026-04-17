@@ -12,7 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as AppRouteImport } from './routes/_app'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as AppCharactersRouteImport } from './routes/_app.characters'
+import { Route as AppCharactersIndexRouteImport } from './routes/_app.characters.index'
 import { Route as AppCharactersNewRouteImport } from './routes/_app.characters.new'
 
 const AuthRoute = AuthRouteImport.update({
@@ -29,49 +29,49 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AppCharactersRoute = AppCharactersRouteImport.update({
-  id: '/characters',
-  path: '/characters',
+const AppCharactersIndexRoute = AppCharactersIndexRouteImport.update({
+  id: '/characters/',
+  path: '/characters/',
   getParentRoute: () => AppRoute,
 } as any)
 const AppCharactersNewRoute = AppCharactersNewRouteImport.update({
-  id: '/new',
-  path: '/new',
-  getParentRoute: () => AppCharactersRoute,
+  id: '/characters/new',
+  path: '/characters/new',
+  getParentRoute: () => AppRoute,
 } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
-  '/characters': typeof AppCharactersRouteWithChildren
   '/characters/new': typeof AppCharactersNewRoute
+  '/characters/': typeof AppCharactersIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
-  '/characters': typeof AppCharactersRouteWithChildren
   '/characters/new': typeof AppCharactersNewRoute
+  '/characters': typeof AppCharactersIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/_app': typeof AppRouteWithChildren
   '/auth': typeof AuthRoute
-  '/_app/characters': typeof AppCharactersRouteWithChildren
   '/_app/characters/new': typeof AppCharactersNewRoute
+  '/_app/characters/': typeof AppCharactersIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/auth' | '/characters' | '/characters/new'
+  fullPaths: '/' | '/auth' | '/characters/new' | '/characters/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/auth' | '/characters' | '/characters/new'
+  to: '/' | '/auth' | '/characters/new' | '/characters'
   id:
     | '__root__'
     | '/'
     | '/_app'
     | '/auth'
-    | '/_app/characters'
     | '/_app/characters/new'
+    | '/_app/characters/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -103,41 +103,31 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/_app/characters': {
-      id: '/_app/characters'
+    '/_app/characters/': {
+      id: '/_app/characters/'
       path: '/characters'
-      fullPath: '/characters'
-      preLoaderRoute: typeof AppCharactersRouteImport
+      fullPath: '/characters/'
+      preLoaderRoute: typeof AppCharactersIndexRouteImport
       parentRoute: typeof AppRoute
     }
     '/_app/characters/new': {
       id: '/_app/characters/new'
-      path: '/new'
+      path: '/characters/new'
       fullPath: '/characters/new'
       preLoaderRoute: typeof AppCharactersNewRouteImport
-      parentRoute: typeof AppCharactersRoute
+      parentRoute: typeof AppRoute
     }
   }
 }
 
-interface AppCharactersRouteChildren {
-  AppCharactersNewRoute: typeof AppCharactersNewRoute
-}
-
-const AppCharactersRouteChildren: AppCharactersRouteChildren = {
-  AppCharactersNewRoute: AppCharactersNewRoute,
-}
-
-const AppCharactersRouteWithChildren = AppCharactersRoute._addFileChildren(
-  AppCharactersRouteChildren,
-)
-
 interface AppRouteChildren {
-  AppCharactersRoute: typeof AppCharactersRouteWithChildren
+  AppCharactersNewRoute: typeof AppCharactersNewRoute
+  AppCharactersIndexRoute: typeof AppCharactersIndexRoute
 }
 
 const AppRouteChildren: AppRouteChildren = {
-  AppCharactersRoute: AppCharactersRouteWithChildren,
+  AppCharactersNewRoute: AppCharactersNewRoute,
+  AppCharactersIndexRoute: AppCharactersIndexRoute,
 }
 
 const AppRouteWithChildren = AppRoute._addFileChildren(AppRouteChildren)
@@ -150,12 +140,3 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { createStart } from '@tanstack/react-start'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-  }
-}

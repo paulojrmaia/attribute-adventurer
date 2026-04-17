@@ -26,7 +26,7 @@ interface CharacterRow {
   created_at: string;
 }
 
-export const Route = createFileRoute("/_app/characters")({
+export const Route = createFileRoute("/_app/characters/")({
   head: () => ({ meta: [{ title: "Meus heróis — Pixel Quest" }] }),
   component: CharactersPage,
 });
