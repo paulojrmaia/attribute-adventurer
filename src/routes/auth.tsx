@@ -14,16 +14,29 @@ export const Route = createFileRoute("/auth")({
 
 function AuthPage() {
   const router = useRouter();
-  const [mode, setMode] = useState<"login" | "signup">("login");
+  const [mode, setMode] = useState<"login" | "signup" | "reset">("login");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [nickname, setNickname] = useState("");
   const [error, setError] = useState<string | null>(null);
+  const [success, setSuccess] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
+
+  const resetForm = () => {
+    setError(null);
+    setSuccess(null);
+    setPassword("");
+  };
+
+  const setActiveMode = (next: "login" | "signup" | "reset") => {
+    setMode(next);
+    resetForm();
+  };
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     setError(null);
+    setSuccess(null);
     setBusy(true);
     try {
       if (mode === "signup") {
@@ -37,11 +50,18 @@ function AuthPage() {
           },
         });
         if (error) throw error;
+        setSuccess("Conta criada! Verifique seu e-mail para confirmar e entrar.");
+      } else if (mode === "reset") {
+        const { error } = await supabase.auth.resetPasswordForEmail(email, {
+          redirectTo: `${window.location.origin}/reset-password`,
+        });
+        if (error) throw error;
+        setSuccess("Link de recuperação enviado! Verifique sua caixa de entrada.");
       } else {
         const { error } = await supabase.auth.signInWithPassword({ email, password });
         if (error) throw error;
+        router.navigate({ to: "/characters" });
       }
-      router.navigate({ to: "/characters" });
     } catch (err) {
       setError(err instanceof Error ? err.message : "Erro inesperado");
     } finally {
@@ -57,7 +77,7 @@ function AuthPage() {
             ⚔ PIXEL QUEST
           </Link>
           <p className="font-pixel text-[0.6rem] text-muted-foreground mt-3">
-            {mode === "login" ? "ENTRE NA AVENTURA" : "CRIE SUA LENDA"}
+            {mode === "login" ? "ENTRE NA AVENTURA" : mode === "signup" ? "CRIE SUA LENDA" : "RECUPERAR SENHA"}
           </p>
         </div>
 
@@ -87,35 +107,57 @@ function AuthPage() {
                 placeholder="heroi@quest.com"
               />
             </div>
-            <div className="space-y-1">
-              <label className="font-pixel text-[0.6rem] text-muted-foreground">SENHA</label>
-              <input
-                type="password"
-                className="pixel-input"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-                minLength={6}
-                placeholder="••••••"
-              />
-            </div>
+            {mode !== "reset" && (
+              <div className="space-y-1">
+                <label className="font-pixel text-[0.6rem] text-muted-foreground">SENHA</label>
+                <input
+                  type="password"
+                  className="pixel-input"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  required
+                  minLength={6}
+                  placeholder="••••••"
+                />
+              </div>
+            )}
 
             {error && (
               <div className="pixel-border-primary p-3 bg-destructive/20">
                 <p className="text-destructive text-base">{error}</p>
               </div>
             )}
+            {success && (
+              <div className="pixel-border-primary p-3 bg-primary/20">
+                <p className="text-primary text-base">{success}</p>
+              </div>
+            )}
 
             <button type="submit" disabled={busy} className="pixel-btn w-full">
-              {busy ? "CARREGANDO..." : mode === "login" ? "ENTRAR" : "CRIAR CONTA"}
+              {busy
+                ? "CARREGANDO..."
+                : mode === "login"
+                ? "ENTRAR"
+                : mode === "signup"
+                ? "CRIAR CONTA"
+                : "ENVIAR LINK"}
             </button>
           </form>
 
-          <div className="text-center pt-2 border-t-4 border-border">
+          <div className="text-center pt-2 border-t-4 border-border space-y-2">
+            {mode === "login" && (
+              <button
+                type="button"
+                onClick={() => setActiveMode("reset")}
+                className="font-pixel text-[0.6rem] text-accent hover:text-primary transition-colors block w-full"
+              >
+                » ESQUECEU A SENHA?
+              </button>
+            )}
             <button
               type="button"
-              onClick={() => { setMode(mode === "login" ? "signup" : "login"); setError(null); }}
-              className="font-pixel text-[0.6rem] text-accent hover:text-primary transition-colors mt-3"
+              onClick={() => setActiveMode(mode === "login" ? "signup" : "login")}
+              className="font-pixel text-[0.6rem] text-accent hover:text-primary transition-colors"
             >
               {mode === "login" ? "» NÃO TEM CONTA? CRIAR UMA" : "» JÁ TENHO CONTA, ENTRAR"}
             </button>
@@ -131,3 +173,4 @@ function AuthPage() {
     </div>
   );
 }
+
