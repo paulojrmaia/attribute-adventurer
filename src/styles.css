@@ -4,8 +4,8 @@
 
 @custom-variant dark (&:is(.dark *));
 
-/* Pixel font */
-@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap');
+/* Pixel fonts are loaded via <link> in src/routes/__root.tsx */
+
 
 @theme inline {
   --radius-sm: 0px;
