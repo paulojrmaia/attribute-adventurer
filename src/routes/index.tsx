@@ -3,7 +3,6 @@ import heroBg from "@/assets/hero-bg.png";
 import warriorImg from "@/assets/class-warrior.png";
 import mageImg from "@/assets/class-mage.png";
 import archerImg from "@/assets/class-archer.png";
-import rogueImg from "@/assets/class-rogue.png";
 import { useAuth } from "@/hooks/useAuth";
 
 export const Route = createFileRoute("/")({
@@ -67,12 +66,11 @@ function Index() {
           Quatro caminhos. Um destino seu.
         </p>
 
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 max-w-3xl mx-auto">
           {[
             { img: warriorImg, name: "Guerreiro", color: "warrior", emoji: "⚔️" },
             { img: mageImg, name: "Mago", color: "mage", emoji: "🔮" },
             { img: archerImg, name: "Arqueiro", color: "archer", emoji: "🏹" },
-            { img: rogueImg, name: "Ladino", color: "rogue", emoji: "🗡️" },
           ].map((c) => (
             <div key={c.name} className="pixel-panel p-3 text-center">
               <div className="aspect-square overflow-hidden mb-3 bg-background">

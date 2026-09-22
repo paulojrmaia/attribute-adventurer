@@ -1,4 +1,4 @@
-export type CharacterClass = "warrior" | "mage" | "archer" | "rogue";
+export type CharacterClass = "warrior" | "mage" | "archer";
 
 export const TOTAL_POINTS = 30;
 export const MIN_STAT = 1;
@@ -48,15 +48,6 @@ export const CLASSES: ClassDef[] = [
     base: { strength: 6, agility: 11, intelligence: 4, vitality: 5 },
     color: "archer",
     emoji: "🏹",
-  },
-  {
-    id: "rogue",
-    name: "Ladino",
-    tagline: "Sombras e adagas",
-    description: "Mestre da furtividade. Ataques críticos das sombras.",
-    base: { strength: 5, agility: 12, intelligence: 5, vitality: 4 },
-    color: "rogue",
-    emoji: "🗡️",
   },
 ];
 

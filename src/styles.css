@@ -44,7 +44,6 @@
   --color-warrior: var(--warrior);
   --color-mage: var(--mage);
   --color-archer: var(--archer);
-  --color-rogue: var(--rogue);
 
   /* Stat colors */
   --color-strength: var(--strength);
@@ -89,7 +88,6 @@
   --warrior: oklch(0.62 0.22 25);   /* red */
   --mage: oklch(0.65 0.2 260);       /* blue */
   --archer: oklch(0.7 0.2 145);      /* green */
-  --rogue: oklch(0.6 0.2 320);       /* purple */
 
   /* Stat colors */
   --strength: oklch(0.65 0.2 30);
