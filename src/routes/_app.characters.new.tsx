@@ -15,13 +15,11 @@ import {
 import warriorImg from "@/assets/class-warrior.png";
 import mageImg from "@/assets/class-mage.png";
 import archerImg from "@/assets/class-archer.png";
-import rogueImg from "@/assets/class-rogue.png";
 
 const CLASS_IMAGES: Record<CharacterClass, string> = {
   warrior: warriorImg,
   mage: mageImg,
   archer: archerImg,
-  rogue: rogueImg,
 };
 
 export const Route = createFileRoute("/_app/characters/new")({
