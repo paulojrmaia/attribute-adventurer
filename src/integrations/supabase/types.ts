@@ -17,11 +17,12 @@ export type Database = {
       characters: {
         Row: {
           agility: number
-          class: Database["public"]["Enums"]["character_class"]
+          class: Database["public"]["Enums"]["character_class_legacy"]
           created_at: string
           id: string
           intelligence: number
           name: string
+          playable_class: Database["public"]["Enums"]["character_class"]
           strength: number
           updated_at: string
           user_id: string
@@ -29,11 +30,12 @@ export type Database = {
         }
         Insert: {
           agility: number
-          class: Database["public"]["Enums"]["character_class"]
+          class: Database["public"]["Enums"]["character_class_legacy"]
           created_at?: string
           id?: string
           intelligence: number
           name: string
+          playable_class: Database["public"]["Enums"]["character_class"]
           strength: number
           updated_at?: string
           user_id: string
@@ -41,11 +43,12 @@ export type Database = {
         }
         Update: {
           agility?: number
-          class?: Database["public"]["Enums"]["character_class"]
+          class?: Database["public"]["Enums"]["character_class_legacy"]
           created_at?: string
           id?: string
           intelligence?: number
           name?: string
+          playable_class?: Database["public"]["Enums"]["character_class"]
           strength?: number
           updated_at?: string
           user_id?: string
@@ -85,7 +88,8 @@ export type Database = {
       [_ in never]: never
     }
     Enums: {
-      character_class: "warrior" | "mage" | "archer" | "rogue"
+      character_class: "warrior" | "mage" | "archer"
+      character_class_legacy: "warrior" | "mage" | "archer" | "rogue"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -213,7 +217,8 @@ export type CompositeTypes<
 export const Constants = {
   public: {
     Enums: {
-      character_class: ["warrior", "mage", "archer", "rogue"],
+      character_class: ["warrior", "mage", "archer"],
+      character_class_legacy: ["warrior", "mage", "archer", "rogue"],
     },
   },
 } as const
