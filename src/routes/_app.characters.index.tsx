@@ -17,6 +17,7 @@ interface CharacterRow {
   id: string;
   name: string;
   class: string;
+  playable_class: string | null;
   strength: number;
   agility: number;
   intelligence: number;
@@ -43,7 +44,10 @@ function CharactersPage() {
       .eq("user_id", user.id)
       .order("created_at", { ascending: false });
     if (error) setError(error.message);
-    else setChars(data);
+    else setChars(data.map((character) => ({
+      ...character,
+      class: character.playable_class ?? character.class,
+    })));
   };
 
   useEffect(() => { load(); /* eslint-disable-next-line react-hooks/exhaustive-deps */ }, [user]);

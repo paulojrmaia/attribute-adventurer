@@ -67,6 +67,7 @@ function NewCharacterPage() {
       user_id: user.id,
       name: name.trim(),
       class: selected,
+      playable_class: selected,
       ...stats,
     });
     setBusy(false);
