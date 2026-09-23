@@ -67,6 +67,7 @@ function NewCharacterPage() {
       user_id: user.id,
       name: name.trim(),
       class: selected,
+      playable_class: selected,
       ...stats,
     });
     setBusy(false);
@@ -86,7 +87,7 @@ function NewCharacterPage() {
       </div>
 
       {step === 1 && (
-        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
+        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5 max-w-5xl mx-auto">
           {CLASSES.map((c) => (
             <button
               key={c.id}
