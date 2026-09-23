@@ -58,8 +58,8 @@ export const STAT_LABELS: Record<keyof Stats, { label: string; short: string; co
   vitality: { label: "Vitalidade", short: "VIT", color: "vitality", icon: "❤️" },
 };
 
-export function getClass(id: CharacterClass): ClassDef {
-  return CLASSES.find((c) => c.id === id)!;
+export function getClass(id: string): ClassDef | undefined {
+  return CLASSES.find((c) => c.id === id);
 }
 
 export function totalSpent(stats: Stats): number {

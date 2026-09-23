@@ -16,7 +16,7 @@ const CLASS_IMAGES: Record<CharacterClass, string> = {
 interface CharacterRow {
   id: string;
   name: string;
-  class: CharacterClass;
+  class: string;
   strength: number;
   agility: number;
   intelligence: number;
@@ -43,7 +43,7 @@ function CharactersPage() {
       .eq("user_id", user.id)
       .order("created_at", { ascending: false });
     if (error) setError(error.message);
-    else setChars(data as CharacterRow[]);
+    else setChars(data);
   };
 
   useEffect(() => { load(); /* eslint-disable-next-line react-hooks/exhaustive-deps */ }, [user]);
@@ -93,23 +93,34 @@ function CharactersPage() {
 
 function HeroCard({ c, onDelete }: { c: CharacterRow; onDelete: () => void }) {
   const def = getClass(c.class);
+  const classImage = def ? CLASS_IMAGES[def.id] : null;
   return (
     <div className="pixel-panel p-4 flex flex-col">
       <div className="aspect-square overflow-hidden mb-3 bg-background">
-        <img
-          src={CLASS_IMAGES[c.class]}
-          alt={def.name}
-          width={512}
-          height={512}
-          loading="lazy"
-          className="w-full h-full object-cover"
-          style={{ imageRendering: "pixelated" }}
-        />
+        {classImage && def ? (
+          <img
+            src={classImage}
+            alt={def.name}
+            width={512}
+            height={512}
+            loading="lazy"
+            className="w-full h-full object-cover"
+            style={{ imageRendering: "pixelated" }}
+          />
+        ) : (
+          <div className="flex h-full items-center justify-center p-4 text-center">
+            <span className="font-pixel text-[0.6rem] text-muted-foreground">CLASSE LEGADA</span>
+          </div>
+        )}
       </div>
       <h3 className="font-pixel text-sm text-foreground mb-1">{c.name}</h3>
-      <p className="font-pixel text-[0.6rem] mb-4" style={{ color: `var(--color-${def.color})` }}>
-        {def.emoji} {def.name.toUpperCase()}
-      </p>
+      {def ? (
+        <p className="font-pixel text-[0.6rem] mb-4" style={{ color: `var(--color-${def.color})` }}>
+          {def.emoji} {def.name.toUpperCase()}
+        </p>
+      ) : (
+        <p className="font-pixel text-[0.6rem] text-muted-foreground mb-4">CLASSE NÃO RECONHECIDA</p>
+      )}
       <div className="grid grid-cols-2 gap-2 text-base mb-4">
         {(Object.keys(STAT_LABELS) as Array<keyof typeof STAT_LABELS>).map((k) => {
           const meta = STAT_LABELS[k];

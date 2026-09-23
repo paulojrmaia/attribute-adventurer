@@ -63,7 +63,7 @@ function Index() {
           ESCOLHA SUA CLASSE
         </h2>
         <p className="text-center text-muted-foreground text-xl mb-10">
-          Quatro caminhos. Um destino seu.
+          Três caminhos. Um destino seu.
         </p>
 
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 max-w-3xl mx-auto">
